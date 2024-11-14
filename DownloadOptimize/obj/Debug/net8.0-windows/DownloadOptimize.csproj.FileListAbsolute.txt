@@ -1,0 +1,14 @@
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\bin\Debug\net8.0-windows\DownloadOptimize.exe
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\bin\Debug\net8.0-windows\DownloadOptimize.deps.json
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\bin\Debug\net8.0-windows\DownloadOptimize.runtimeconfig.json
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\bin\Debug\net8.0-windows\DownloadOptimize.dll
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\bin\Debug\net8.0-windows\DownloadOptimize.pdb
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.AssemblyInfoInputs.cache
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.AssemblyInfo.cs
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.csproj.CoreCompileInputs.cache
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.dll
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\refint\DownloadOptimize.dll
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.pdb
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.genruntimeconfig.cache
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\ref\DownloadOptimize.dll
