@@ -7,6 +7,10 @@ public class Zipper
     public Zipper(Settings settings)
     {
         this.settings = settings;
-        
+    }
+
+    public void CheckForOldFiles()
+    {
+        var files = Directory.GetFiles(settings.pathToDownloads, "*.*", SearchOption.AllDirectories);
     }
 }
