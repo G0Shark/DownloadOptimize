@@ -43,6 +43,30 @@ public static class Configurator
         Console.WriteLine(lang["Welcome"]);
         Console.ReadLine();
         
+        Console.Clear();
+        Console.WriteLine(lang["DownloadsPath"]);
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        bool isGoodPath = false;
+        string pathToDownloads = "";
+        while (!isGoodPath)
+        {
+            string answer = Console.ReadLine() ?? "null";
+            if (!Directory.Exists(answer))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid path");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+            }
+            else
+            {
+                pathToDownloads = answer;
+                isGoodPath = true;
+            }
+        }
+
+        settings.pathToDownloads = pathToDownloads;
+
+
         int answer1 = Question(1, 3); //Распределение файлов
         int answer2 = Question(2, 3); //Сжатие файлов
         int answer3 = Question(3, 2); //Время, когда файлы будут старыми
@@ -56,6 +80,11 @@ public static class Configurator
             case 2:
                 settings.WillWeSort = true; 
                 settings.SortEveryFile = false; 
+                settings.whatFilesInWhatFolders = new Dictionary<string, string>
+                {
+                    {".dat","Data"},
+                    {".png","Images"},
+                };
                 break;
             case 3:
                 settings.WillWeSort = false; 
@@ -98,14 +127,22 @@ public static class Configurator
     static int Question(int questionId, int howManyQuestions)
     {
         Console.Clear();
-        Console.WriteLine(lang[$"Q{questionId}"]);
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(lang[$"Q{questionId}"]+"\n");
 
         for (int i = 1; i < howManyQuestions+1; i++)
         {
-            Console.WriteLine(lang[$"A{questionId}{i}"]);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("[");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write(i);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("]");
+            Console.ResetColor();
+            Console.WriteLine(": "+lang[$"A{questionId}{i}"]);
         }
 
-        int answer = int.Parse(Console.ReadLine()??"0");
+        int answer = int.Parse(Console.ReadKey().KeyChar.ToString());
 
         if (0 > answer || answer > howManyQuestions)
         {

@@ -12,3 +12,4 @@ D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-win
 D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.pdb
 D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.genruntimeconfig.cache
 D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\ref\DownloadOptimize.dll
+D:\Projects\RiderProjects\DownloadOptimize\DownloadOptimize\obj\Debug\net8.0-windows\DownloadOptimize.sourcelink.json

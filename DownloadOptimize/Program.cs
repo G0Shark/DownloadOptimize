@@ -22,6 +22,7 @@ static class Program
             Configurator.RunConsoleConfigurator();
         }
         Settings settings = JsonSerializer.Deserialize<Settings>(File.ReadAllText("settings.json"))!;
+        Sorter sorter = new Sorter(settings);
         
         IconInit(handle);
         Application.Run(); 
