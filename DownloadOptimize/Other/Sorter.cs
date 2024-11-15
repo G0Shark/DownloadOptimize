@@ -24,7 +24,7 @@ public class Sorter
     {
         Console.WriteLine("File created: " + e.FullPath);
         
-        if (e.FullPath.EndsWith(".~") || e.FullPath.EndsWith(".tmp"))
+        if (e.FullPath.EndsWith(".~") || e.FullPath.EndsWith(".tmp") || e.FullPath.EndsWith("oldFiles.zip"))
         {
             return;
         }

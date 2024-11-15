@@ -23,6 +23,15 @@ static class Program
         }
         Settings settings = JsonSerializer.Deserialize<Settings>(File.ReadAllText("settings.json"))!;
         Sorter sorter = new Sorter(settings);
+        Zipper zipper = new Zipper(settings);
+        
+        var startTimeSpan = TimeSpan.Zero;
+        var periodTimeSpan = TimeSpan.FromSeconds(10);
+
+        var timer = new System.Threading.Timer((e) =>
+        {
+            zipper.CheckForOldFiles(); 
+        }, null, startTimeSpan, periodTimeSpan);
         
         IconInit(handle);
         Application.Run(); 
