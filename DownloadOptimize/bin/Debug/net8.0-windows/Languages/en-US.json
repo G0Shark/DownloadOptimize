@@ -1,0 +1,29 @@
+{
+    "Welcome":"Welcome to configuration wizard of DownloadOptimize!\nThis program are sorting Downloads folder\nPress ENTER to continue",
+    "DownloadsPath":"For start, write a PATH to Downloads folder",
+
+    "Q1":"What sort we will use?",
+    "A11":"Strict. All file types are located in different folders",
+    "A12":"Convenient. All files will be distributed according to \"my\" standard, so that the program will understand what these files belong to and where they should be placed.",
+    "A13":"Dont use sorting",
+
+    "Q2":"Zipping \"old\" files, how to do?",
+    "A21":"Minimum size. Will zip any file to his minimal size (for good PCs)",
+    "A22":"Lite. Will zip files, but dont for them minimum size",
+    "A23":"Dont use zipping",
+
+    "Q3":"Now main function. What files will be \"old\"?",
+    "A31":"files, whats created for 2 weeks ago",
+    "A32":"Write own time",
+    "A33":"Dont use a system of \"old\" files",
+
+    "Q4":"Last Question. When program will check your folder for \"old\" files?",
+    "A41":"Check every day",
+    "A42":"Write own time",
+
+    "WriteHowManySeconds":"Write what time will be \"old\" (in seconds)",
+    "WriteHowManySecondsToCheck":"Write time for checking folder (in seconds)",
+    "InvalidAnswer":"Invalid Answer. Try again",
+
+    "ThanksForAnswering":"Thanks for answering, now you can hide app in your tray (press for icon two times). All settings are saved at settings.json in program root"
+}
