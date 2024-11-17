@@ -13,7 +13,7 @@ public class Sorter
         watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
                                                         | NotifyFilters.FileName | NotifyFilters.DirectoryName;
 
-        Console.WriteLine("created watcher");
+        Logger.Log("Created Watcher");
         watcher.Created += FileCreated;
         watcher.Changed += FileCreated;
         
@@ -22,7 +22,7 @@ public class Sorter
 
     private async void FileCreated(object sender, FileSystemEventArgs e)
     {
-        Console.WriteLine("File created: " + e.FullPath);
+        Logger.Log("FileCreated() function runned");
         
         if (e.FullPath.EndsWith(".~") || e.FullPath.EndsWith(".tmp") || e.FullPath.EndsWith("oldFiles.zip"))
         {
@@ -68,7 +68,29 @@ public class Sorter
                 {
                     Directory.CreateDirectory(pathToFolder);
                 }
-                File.Move(e.FullPath, pathToFolder + "\\" + e.Name.Split('\\').Last());
+
+
+                int order = 0;
+                while (true)
+                {
+                    try
+                    {
+                        if (order == 0)
+                        {
+                            File.Move(e.FullPath, pathToFolder + "\\" + e.Name.Split('\\').Last());
+                            return;
+                        }
+                        else
+                        {
+                            File.Move(e.FullPath, pathToFolder + "\\(" + order + ")_" + e.Name.Split('\\').Last());
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        order++;
+                    }
+                }
             }
         }   
     }

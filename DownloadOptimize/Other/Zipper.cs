@@ -1,4 +1,6 @@
-﻿using System.IO.Compression;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO.Compression;
+using Microsoft.VisualBasic.Logging;
 
 namespace DownloadOptimize.Other;
 
@@ -9,63 +11,86 @@ public class Zipper
     public Zipper(Settings settings)
     {
         this.settings = settings;
-        Console.WriteLine("Ziper created");
+        Logger.Log("Zipper created");
     }
-
+    
     public void CheckForOldFiles()
     {
-        Console.WriteLine("Checking for old files");
+        Logger.Log("CheckForOldFiles() runned...");
         var files = Directory.GetFiles(settings.pathToDownloads, "*.*", SearchOption.AllDirectories);
+        
+        List<string> filesOlds = new List<string>();
+        
         foreach (var file in files)
         {
-            Console.WriteLine($"Found file: {file}");
-            if (File.GetCreationTime(file).AddSeconds(5).ToLocalTime() > DateTime.Now.ToLocalTime())
+            Logger.INFO($"Founded file: {file}");
+            if (File.GetCreationTime(file).AddSeconds(settings.howManySecondsIsOld).ToLocalTime() > DateTime.Now.ToLocalTime())
             {
-                Console.WriteLine("file dont old");
-                Console.WriteLine(File.GetCreationTime(file));
                 continue;
             }
 
             if (file.EndsWith("oldFiles.zip"))
             {
-                Console.WriteLine("Choosed a own zip");
+                Logger.Error("Choosed a own zip, skipping...");
                 continue;
             }
 
             if (settings.zipType != Settings.ZipType.ZIP_NON)
             {
-                Console.WriteLine("file old, checking...");
-                string pathToZip = settings.pathToDownloads + "\\oldFiles.zip";
+                filesOlds.Add(file);
+            }
+        }
 
-                if (!File.Exists(pathToZip))
+        if (filesOlds.Count == 0)
+        {
+            return;
+        }
+        
+        Logger.Log("File old, checking...");
+        string pathToZip = settings.pathToDownloads + "\\oldFiles.zip";
+
+        if (!File.Exists(pathToZip))
+        {
+            using (FileStream zipFile = new FileStream(pathToZip, FileMode.Create))
+            {
+                using (ZipArchive archive = new ZipArchive(zipFile, ZipArchiveMode.Create, true))
                 {
-                    using (FileStream zipFile = new FileStream(pathToZip, FileMode.Create))
-                    {
-                        using (ZipArchive archive = new ZipArchive(zipFile, ZipArchiveMode.Create, true))
-                        {
-                            // At this point, we have an empty zip file
-                            Console.WriteLine("Empty zip file created successfully.");
-                        }
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        Console.WriteLine("zip file already exists");
-                        using (var zip = ZipFile.Open(pathToZip, ZipArchiveMode.Update))
-                        {
-                            var FileInfo = new FileInfo(file);
-                            zip.CreateEntryFromFile(FileInfo.FullName, FileInfo.Name);
-                            File.Delete(file);
-                        }
-                    }
-                    catch
-                    {
-                        Console.WriteLine("some problems... try in another time");
-                    }
+                    Logger.Log("Creating a zip archive...");
                 }
             }
+        }
+        else
+        {
+            CompressionLevel compressionLevel = CompressionLevel.Optimal;
+            if (settings.zipType == Settings.ZipType.ZIP_MAX)
+            {
+                compressionLevel = CompressionLevel.SmallestSize;
+            }
+            
+            using (ZipArchive zipFrom = ZipFile.Open(pathToZip, ZipArchiveMode.Read))
+            using (ZipArchive zipTo = ZipFile.Open(pathToZip + ".tmp", ZipArchiveMode.Create))
+            {
+                foreach (ZipArchiveEntry entryFrom in zipFrom.Entries)
+                {
+                    ZipArchiveEntry entryTo = zipTo.CreateEntry(entryFrom.FullName);
+
+                    using (Stream streamFrom = entryFrom.Open())
+                    using (Stream streamTo = entryTo.Open())
+                    {
+                        streamFrom.CopyTo(streamTo);
+                    }
+                }
+
+                foreach (String filePath in filesOlds)
+                {
+                    string nm = Path.GetFileName(filePath);
+                    zipTo.CreateEntryFromFile(filePath, nm, compressionLevel);
+                    File.Delete(filePath);
+                }
+            }
+
+            File.Delete(pathToZip);
+            File.Move(pathToZip + ".tmp", pathToZip);
         }
         
         DeleteEmptySubdirectories(settings.pathToDownloads);
@@ -75,16 +100,13 @@ public class Zipper
         try
         {
             DirectoryInfo info = new DirectoryInfo(directory);
-            
-            // Check if the directory itself is empty
             if (info.GetFiles().Length == 0 && info.GetDirectories().Length == 0)
             {
                 Directory.Delete(directory, true);
-                Console.WriteLine($"Deleted empty directory: {directory}");
+                Logger.Log($"Deleted empty directory: {directory}");
             }
             else
             {
-                // Recursively process subdirectories
                 foreach (DirectoryInfo subDir in info.GetDirectories())
                 {
                     DeleteEmptySubdirectories(subDir.FullName);
@@ -93,11 +115,11 @@ public class Zipper
         }
         catch (UnauthorizedAccessException)
         {
-            Console.WriteLine($"Access denied: {directory}");
+            Logger.Error($"Access denied: {directory}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error processing {directory}: {ex.Message}");
+            Logger.Error($"Error processing {directory}: {ex.Message}");
         }
     }
 }

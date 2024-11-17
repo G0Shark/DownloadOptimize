@@ -12,7 +12,8 @@ public class Settings
     public Dictionary<string, string> whatFilesInWhatFolders { get; set; }
     public ZipType zipType { get; set; }
     public bool isMakeOldFiles { get; set; }
-    public int hawManyWeeksIsOld { get; set; }
+    public int howManySecondsIsOld { get; set; }
+    public int howManySecondsToCheck { get; set; }
     public enum ZipType
     {
         ZIP_MAX,
@@ -54,7 +55,7 @@ public static class Configurator
             if (!Directory.Exists(answer))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Invalid path");
+                Console.WriteLine(lang["InvalidAnswer"]);
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
             }
             else
@@ -68,8 +69,6 @@ public static class Configurator
 
 
         int answer1 = Question(1, 3); //Распределение файлов
-        int answer2 = Question(2, 3); //Сжатие файлов
-        int answer3 = Question(3, 2); //Время, когда файлы будут старыми
         
         switch (answer1)
         {
@@ -82,14 +81,45 @@ public static class Configurator
                 settings.SortEveryFile = false; 
                 settings.whatFilesInWhatFolders = new Dictionary<string, string>
                 {
-                    {".dat","Data"},
                     {".png","Images"},
+                    {".jpg","Images"},
+                    {".webm","Images"},
+                    {".jpeg","Images"},
+                    {".bmp","Images"},
+                    {".gif","Images"},
+                    
+                    {".exe","Executables"},
+                    {".bat","Executables"},
+                    
+                    {".msi","Setups"},
+                    
+                    {".mp4","Videos"},
+                    {".avi","Videos"},
+                    {".mpeg","Videos"},
+                    
+                    {".zip","Archives"},
+                    {".7z","Archives"},
+                    {".rar","Archives"},
+                    
+                    {".wav","Audio"},
+                    {".mp3","Audio"},
+                    {".midi","Audio"},
+                    {".kar","Audio"},
+                    {".ogg","Audio"},
+                    
+                    {".txt","Text"},
+                    {".rtf","Text"},
+                    {".doc","Text"},
+                    {".docx","Text"},
+                    {".odt","Text"},
                 };
                 break;
             case 3:
                 settings.WillWeSort = false; 
                 break;
         }
+        
+        int answer2 = Question(2, 3); //Сжатие файлов
         
         switch (answer2)
         {
@@ -104,19 +134,72 @@ public static class Configurator
                 break;
         }
 
+        int answer3 = Question(3, 3); //Время, когда файлы будут старыми
+        
         switch (answer3)
         {
             case 1:
                 settings.isMakeOldFiles = true;
-                settings.hawManyWeeksIsOld = 2;
+                settings.howManySecondsIsOld = 1209600;
                 break;
             case 2:
                 settings.isMakeOldFiles = true;
-                settings.hawManyWeeksIsOld = 1;
+                Console.Clear();
+                bool isValidAnswer = false;
+                while (!isValidAnswer)
+                {
+                    try
+                    {
+                        Console.WriteLine(lang["WriteHowManySeconds"]);
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        settings.howManySecondsIsOld = int.Parse(Console.ReadLine()??"0");
+                        Console.ResetColor();
+                        isValidAnswer = true;
+                    }
+                    catch
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(lang["InvalidAnswer"]);
+                        Console.ResetColor();
+                    }
+                }
+                Console.ResetColor();
                 break;
             case 3:
                 settings.isMakeOldFiles = false;
                 break;
+        }
+
+        int answer4 = Question(4, 2);
+        
+        switch (answer4)
+        {
+            case 1:
+                settings.howManySecondsToCheck = 86400;
+                break;
+            case 2:
+                Console.Clear();
+                bool isValidAnswer = false;
+                while (!isValidAnswer)
+                {
+                    try
+                    {
+                        Console.WriteLine(lang["WriteHowManySecondsToCheck"]);
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        settings.howManySecondsToCheck = int.Parse(Console.ReadLine()??"0");
+                        Console.ResetColor();
+                        isValidAnswer = true;
+                    }
+                    catch
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(lang["InvalidAnswer"]);
+                        Console.ResetColor();
+                    }
+                }
+                Console.ResetColor();
+                break;
+            
         }
         
         File.WriteAllText("settings.json", JsonSerializer.Serialize(settings));
